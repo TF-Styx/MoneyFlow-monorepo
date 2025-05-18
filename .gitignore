@@ -19,6 +19,9 @@
 # Mono auto generated files
 mono_crash.*
 
+# Visual Studio Template Engine Host cache
+TemplateEngineHost/vs/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
