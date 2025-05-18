@@ -1,0 +1,56 @@
+﻿<Window x:Class="MoneyFlow.WPF.Views.Windows.AddBaseInformationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MoneyFlow.WPF.Views.Windows" 
+        xmlns:windowviewmodels="clr-namespace:MoneyFlow.WPF.ViewModels.WindowViewModels" 
+        d:DataContext="{d:DesignInstance Type=windowviewmodels:AddBaseInformationVM}"
+        mc:Ignorable="d"
+        Title="AddBaseInformationWindow" 
+        Height="450" Width="800">
+    <TabControl>
+        <TabItem Header="Банк">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                
+                <DataGrid Grid.Column="0" 
+                          ItemsSource="{Binding Banks}"
+                          SelectedItem="{Binding SelectedBank}">
+
+                </DataGrid>
+
+                <StackPanel Grid.Column="1">
+                    <TextBox Text="{Binding BankName}" Margin="10" Width="190" FontSize="15"/>
+                    <Button Content="Добавить" Margin="10" Command="{Binding BankAddCommand}"/>
+                    <Button Content="Обновить" Margin="10" Command="{Binding BankUpdateCommand}"/>
+                    <Button Content="Удалить" Margin="10" Command="{Binding BankDeleteCommand}"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Пол">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+
+                <DataGrid Grid.Column="0" 
+                          ItemsSource="{Binding Genders}"
+                          SelectedItem="{Binding SelectedGender}">
+
+                </DataGrid>
+
+                <StackPanel Grid.Column="1">
+                    <TextBox Text="{Binding GenderName}" Margin="10" Width="190" FontSize="15"/>
+                    <Button Content="Добавить" Margin="10" Command="{Binding GenderAddCommand}"/>
+                    <Button Content="Обновить" Margin="10" Command="{Binding GenderUpdateCommand}"/>
+                    <Button Content="Удалить" Margin="10" Command="{Binding GenderDeleteCommand}"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Window>

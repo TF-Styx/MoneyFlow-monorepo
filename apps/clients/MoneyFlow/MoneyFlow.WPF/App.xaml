@@ -1,0 +1,23 @@
+﻿<Application x:Class="MoneyFlow.WPF.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MoneyFlow.WPF" 
+             xmlns:converter="clr-namespace:MoneyFlow.WPF.Views.ValueConverts">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <converter:AccountManagementControlsVisibilityConverter x:Key="AccountManagementControlsVisibilityConverter"/>
+            <converter:DateConverter x:Key="DateConverter"/>
+            <converter:DecimalToStringConverter x:Key="DecimalToStringConverter"/>
+            <converter:StatusTransactionToColorConverter x:Key="StatusTransactionToColorConverter"/>
+            <converter:StatusTransactionToIconConverter x:Key="StatusTransactionToIconConverter"/>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles\ButtonStyle.xaml"/>
+                <ResourceDictionary Source="Styles\ListViewStyle.xaml"/>
+                <ResourceDictionary Source="Styles\ScrollViewerStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+    
+</Application>

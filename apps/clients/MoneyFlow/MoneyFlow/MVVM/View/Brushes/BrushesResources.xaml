@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--#region Фон приложения -->
+    <LinearGradientBrush x:Key="AppGradientBrush" StartPoint="1,0" EndPoint="0,1">
+        <GradientStop Color="#100d10" Offset="0" />
+        <GradientStop Color="#150c15" Offset="0.25" />
+        <GradientStop Color="#130f1a" Offset="0.75" />
+        <GradientStop Color="#0e141f" Offset="1" />
+    </LinearGradientBrush>
+    <!--#endregion-->
+
+    <!--#region Общие цвета -->
+    <SolidColorBrush x:Key="AppTextColor" Color="White"/>
+    <!--#endregion-->
+
+    <!--#region SideMenuBrushes -->
+    <LinearGradientBrush x:Key="SideMenuBrushes" StartPoint="1,0" EndPoint="0,1">
+        <GradientStop Color="#001dfa" Offset="0" />
+        <GradientStop Color="#071fcf" Offset="0.25" />
+        <GradientStop Color="#0d1d9c" Offset="0.75" />
+        <GradientStop Color="#0f1752" Offset="1" />
+    </LinearGradientBrush>
+    <!--#endregion-->
+
+</ResourceDictionary>

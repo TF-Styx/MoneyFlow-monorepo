@@ -1,0 +1,46 @@
+﻿<Application x:Class="MoneyFlow.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MoneyFlow">
+    
+    <Application.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="MVVM/View/Brushes/BrushesResources.xaml"/>
+
+                <ResourceDictionary Source="MVVM/View/ShadowEffect/ShadowEffectResources.xaml"/>
+
+                <ResourceDictionary Source="MVVM/View/Shapes/ShapesResource.xaml"/>
+
+                <ResourceDictionary Source="MVVM/View/Styles/BorderStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/ComboBoxStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/ContextMenuStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/DataGridStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/DatePickerStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/FontAwesomeStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/ImageStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/ListViewStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/MenuStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/ScrollViewerStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/SeparatorStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/TextBlockStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/TextBoxStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/ToggleButtonStyle.xaml"/>
+                <ResourceDictionary Source="MVVM/View/Styles/WindowStyle.xaml"/>
+
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </Application.Resources>
+
+</Application>
+
+<!--
+    Scaffold-DbContext "Server=STYX;Database=MoneyFlowDB;Trusted_Connection=true;TrustServerCertificate=true" Microsoft.EntityFrameworkCore.SqlServer  -OutputDir MVVM/Models/DB_MSSQL -Force
+-->
+
+<!--
+    Scaffold-DbContext "Server=<НАЗВАНИЕ СЕРВЕРА>;Database=<НАЗВАНИЕ БД>;Trusted_Connection=true;TrustServerCertificate=true" Microsoft.EntityFrameworkCore.SqlServer  -OutputDir<НАНЗВАНИЕ ПАПКИ>
+-->

@@ -1,0 +1,82 @@
+﻿<Page x:Class="MoneyFlow.WPF.Views.Pages.CategoryPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MoneyFlow.WPF.Views.Pages" 
+      xmlns:fa="http://schemas.fontawesome.com/icons/" 
+      xmlns:pageviewmodels="clr-namespace:MoneyFlow.WPF.ViewModels.PageViewModels" 
+      d:DataContext="{d:DesignInstance Type=pageviewmodels:CategoryPageVM}"
+      mc:Ignorable="d" 
+      d:Height="500" d:Width="400"
+      d:Background="White"
+      Title="CategoryPage">
+
+    <!--#region Форма заполнения информации о Категориях -->
+    <Border Grid.Column="1" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 10 5 5">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="10" Direction="300"/>
+        </Border.Effect>
+        <ScrollViewer>
+            <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <DockPanel DockPanel.Dock="Top">
+                    <TextBlock Text="Информация о категории" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="15"/>
+                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+                        <!--#region Поля -->
+                        <StackPanel DockPanel.Dock="Top">
+                            <DockPanel Margin="0 0 0 5">
+                                <TextBlock Text="CategoryName" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                <TextBox Text="{Binding CategoryName}" d:Text="CategoryName"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 5 0 5">
+                                <TextBlock Text="Description" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                <TextBox Text="{Binding DescriptionCat}" d:Text="Что-то очень заумное" TextWrapping="Wrap" MaxHeight="200"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 5 0 0">
+                                <TextBlock Text="Image Category" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                <!--#region Категория -->
+                                <DockPanel HorizontalAlignment="Center">
+                                    <Border BorderBrush="Black" BorderThickness="1">
+                                        <StackPanel>
+                                            <Border BorderThickness="0 0 0 1" BorderBrush="Black">
+                                                <!--BorderThickness="0 0 0 2"-->
+                                                <Image Source="{Binding SelectImageCat}" MinWidth="100" MaxWidth="200" MinHeight="100" MaxHeight="200" Margin="5"/>
+                                            </Border>
+                                            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
+                                                <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageCatCommand}">
+                                                    <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
+                                                </Button>
+                                                <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Right" Margin="10 0 0 0" Command="{Binding ClearImageCatCommand}">
+                                                    <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
+                                                </Button>
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </DockPanel>
+                                <!--#endregion-->
+                            </DockPanel>
+                            <DockPanel Margin="0 5 0 5">
+                                <TextBlock Text="Color" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                <ComboBox ItemsSource="{Binding ColorCat}"
+                                          SelectedItem="{Binding SelectedColorCat}"
+                                          DisplayMemberPath="BankName"/>
+                            </DockPanel>
+                        </StackPanel>
+                        <!--#endregion-->
+                    </DockPanel>
+                </DockPanel>
+
+                <!--#region Кнопки управления счетами -->
+                <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" Margin="10">
+                    <Button Content="Добавить категорию" Command="{Binding CategoryAddCommand}" Margin="0 0 0 0"/>
+                    <Button Content="Изменить категорию" Command="{Binding CategoryUpdateCommand}" Margin="0 10 0 0"/>
+                    <Button Content="Удалить категорию"  Command="{Binding CategoryDeleteCommand}" Margin="0 10 0 0"/>
+                </StackPanel>
+                <!--#endregion-->
+            </DockPanel>
+        </ScrollViewer>
+    </Border>
+    <!--#endregion-->
+
+
+</Page>

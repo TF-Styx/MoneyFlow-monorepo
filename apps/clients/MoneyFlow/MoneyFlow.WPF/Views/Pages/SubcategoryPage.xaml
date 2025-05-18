@@ -1,0 +1,78 @@
+﻿<Page x:Class="MoneyFlow.WPF.Views.Pages.SubcategoryPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MoneyFlow.WPF.Views.Pages" 
+      xmlns:fa="http://schemas.fontawesome.com/icons/"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="400"
+      Title="SubcategoryPage">
+
+    <!--#region Форма заполнения информации о Подкатегориях -->
+    <Border Grid.Column="2" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 10 5 5">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="10" Direction="300"/>
+        </Border.Effect>
+        <ScrollViewer>
+            <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <DockPanel DockPanel.Dock="Top">
+                    <TextBlock Text="Информация о категории" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="15"/>
+                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+                        <!--#region Поля -->
+                        <StackPanel DockPanel.Dock="Top">
+                            <DockPanel Margin="0 0 0 5">
+                                <TextBlock Text="CategoryName" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                <ComboBox ItemsSource="{Binding Categories}" 
+                                          SelectedItem="{Binding SelectedCategory}"
+                                          DisplayMemberPath="CategoryName"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 0 0 5">
+                                <TextBlock Text="SubcategoryName" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                <TextBox Text="{Binding SubcategoryName}" d:Text="SubcategoryName"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 5 0 5">
+                                <TextBlock Text="Description" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                <TextBox Text="{Binding DescriptionSub}" d:Text="Что-то очень заумное" TextWrapping="Wrap" MaxHeight="200"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 5 0 0">
+                                <TextBlock Text="Image Subcategory" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                <!--#region Подкатегория -->
+                                <DockPanel HorizontalAlignment="Center">
+                                    <Border BorderBrush="Black" BorderThickness="1">
+                                        <StackPanel>
+                                            <Border BorderThickness="0 0 0 1" BorderBrush="Black">
+                                                <!--BorderThickness="0 0 0 2"-->
+                                                <Image Source="{Binding SelectImageSub}" MinWidth="100" MaxWidth="200" MinHeight="100" MaxHeight="200" Margin="5"/>
+                                            </Border>
+                                            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
+                                                <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageSubCommand}">
+                                                    <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
+                                                </Button>
+                                                <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Right" Margin="10 0 0 0" Command="{Binding ClearImageSubCommand}">
+                                                    <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
+                                                </Button>
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </DockPanel>
+                                <!--#endregion-->
+                            </DockPanel>
+                        </StackPanel>
+                        <!--#endregion-->
+                    </DockPanel>
+                </DockPanel>
+
+                <!--#region Кнопки управления счетами -->
+                <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" Margin="10">
+                    <Button Content="Добавить подкатегорию" Command="{Binding SubcategoryAddCommand}" Margin="0 0 0 0"/>
+                    <Button Content="Изменить подкатегорию" Command="{Binding SubcategoryUpdateCommand}" Margin="0 10 0 0"/>
+                    <Button Content="Удалить подкатегорию" Command="{Binding SubcategoryDeleteCommand}" Margin="0 10 0 0"/>
+                </StackPanel>
+                <!--#endregion-->
+            </DockPanel>
+        </ScrollViewer>
+    </Border>
+    <!--#endregion-->
+
+</Page>

@@ -1,0 +1,109 @@
+﻿<Page x:Class="MoneyFlow.WPF.Views.Pages.AccountPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MoneyFlow.WPF.Views.Pages" 
+      xmlns:pageviewmodels="clr-namespace:MoneyFlow.WPF.ViewModels.PageViewModels" 
+      d:DataContext="{d:DesignInstance Type=pageviewmodels:AccountPageVM}"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AccountPage"
+      Background="White">
+
+    <Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="45"/>
+            </Grid.RowDefinitions>
+
+            <!--#region Счета пользователя -->
+            <Border Grid.Column="0" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10 10 5 5">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" Direction="300"/>
+                </Border.Effect>
+                <Grid>
+                    <DockPanel>
+                        <TextBlock Text="Счета пользователя" DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="15"/>
+                        <DataGrid AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  GridLinesVisibility="None"
+                                  HeadersVisibility="Column"
+                                  RowHeaderWidth="0"
+                                  SelectionMode="Single"
+                                  VerticalAlignment="Top"
+                                  ItemsSource="{Binding Accounts}" 
+                                  d:ItemsSource="{d:SampleData ItemCount=15}"
+                                  SelectedItem="{Binding SelectedAccount}"
+                                  Margin="10">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
+                                <DataGridTextColumn Header="NumberAccount" Binding="{Binding NumberAccount}" Width="*"/>
+                                <DataGridTextColumn Header="Balance" Binding="{Binding Balance}" Width="*"/>
+                                <DataGridTextColumn Header="Bank" Binding="{Binding Bank.BankName}" Width="*"/>
+                                <DataGridTextColumn Header="AccountType" Binding="{Binding AccountType.AccountTypeName}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Grid>
+            </Border>
+            <!--#endregion-->
+
+            <!--#region Информация о счете -->
+            <Border  Grid.Column="1" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 10 5 5">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" Direction="300"/>
+                </Border.Effect>
+                <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock Text="Информация о счёте" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="15"/>
+                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+                        <!--#region Поля -->
+                        <StackPanel DockPanel.Dock="Top">
+                            <DockPanel Margin="0 0 0 5">
+                                <TextBlock Text="NumberAccount" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                <TextBox Text="{Binding NumberAccount}" d:Text="NumberAccount"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 5 0 5">
+                                <TextBlock Text="Balance" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                <TextBox Text="{Binding Balance}" d:Text="12345"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 5 0 5">
+                                <TextBlock Text="BankName" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                <ComboBox ItemsSource="{Binding Banks}"
+                                          SelectedItem="{Binding SelectedBank}"
+                                          DisplayMemberPath="BankName"/>
+                            </DockPanel>
+                            <DockPanel Margin="0 5 0 0">
+                                <TextBlock Text="AccountType" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                <ComboBox ItemsSource="{Binding AccountTypes}" 
+                                          SelectedItem="{Binding SelectedAccountType}" 
+                                          DisplayMemberPath="AccountTypeName"/>
+                            </DockPanel>
+                        </StackPanel>
+                        <!--#endregion-->
+
+                        <!--#region Кнопки управления счетами -->
+                        <StackPanel VerticalAlignment="Bottom">
+                            <Button Content="Добавить счёт" Command="{Binding AccountAddCommand}" Height="30" Margin="0 10 0 5"/>
+                            <Button Content="Изменить счёт" Command="{Binding AccountUpdateCommand}" Height="30" Margin="0 5 0 5"/>
+                            <Button Content="Удалить счёт" Command="{Binding AccountDeleteCommand}" Height="30" Margin="0 5 0 0"/>
+                        </StackPanel>
+                        <!--#endregion-->
+                    </DockPanel>
+                </DockPanel>
+            </Border>
+            <!--#endregion-->
+
+            <!--#region Навигация -->
+            <Button Grid.Column="1" Grid.Row="1" Content="Назад" Width="100" Height="25" 
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10"
+                        Command="{Binding OpenProfileUserPageCommand}"/>
+            <!--#endregion-->
+        </Grid>
+    </Border>
+</Page>

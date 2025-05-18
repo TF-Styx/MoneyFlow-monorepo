@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="MoneyFlow.MVVM.View.UserControls.ProfileControl.ProfileHeaderControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MoneyFlow.MVVM.View.UserControls.ProfileControl" 
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             mc:Ignorable="d" 
+             Height="Auto" Width="Auto">
+
+    <Grid>
+        <!--#region Выбор картинки для категории-->
+        <WrapPanel Margin="10" HorizontalAlignment="Left">
+            <!--#region Картинка -->
+            <Border BorderBrush="White" BorderThickness="1" CornerRadius="10">
+                <StackPanel>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="White">
+                        <Image x:Name="Avatar" d:Source="/Res/Kotozila.jpg" Width="100" Height="100" Margin="5"/>
+                    </Border>
+
+                    <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
+                        <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedCategoryImageCommand}">
+                            <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
+                        </Button>
+                        <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Right" Margin="10 0 0 0" Command="{Binding ClearCategoryImageCommand}">
+                            <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
+                        </Button>
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+            <!--#endregion-->
+
+            <!--#region Общая информация -->
+            <StackPanel>
+                <TextBlock x:Name="Login" d:Text="Пример" Style="{StaticResource BaseTextBlockStyle}"/>
+                <TextBlock x:Name="Password" d:Text="Пример" Style="{StaticResource BaseTextBlockStyle}"/>
+                <TextBlock x:Name="UserName" d:Text="Пример" Style="{StaticResource BaseTextBlockStyle}"/>
+                <TextBlock x:Name="Gender" d:Text="Пример" Style="{StaticResource BaseTextBlockStyle}"/>
+            </StackPanel>
+            <!--#endregion-->
+        </WrapPanel>
+        <!--#endregion-->
+        
+        
+    </Grid>
+</UserControl>
