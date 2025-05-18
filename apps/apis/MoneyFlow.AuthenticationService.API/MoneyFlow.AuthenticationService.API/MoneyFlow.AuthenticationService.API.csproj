@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>01884c99-d728-4d08-b1ec-413d40c06da4</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MoneyFlow.AuthenticationService.Application\MoneyFlow.AuthenticationService.Application.csproj" />
+    <ProjectReference Include="..\MoneyFlow.AuthenticationService.Domain\MoneyFlow.AuthenticationService.Domain.csproj" />
+    <ProjectReference Include="..\MoneyFlow.AuthenticationService.Infrastructure\MoneyFlow.AuthenticationService.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
