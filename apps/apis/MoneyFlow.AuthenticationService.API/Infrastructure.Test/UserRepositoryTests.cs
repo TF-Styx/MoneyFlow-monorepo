@@ -29,15 +29,6 @@ namespace Infrastructure.Test
             _context.Dispose();
         }
 
-        /// <summary>
-        /// Создание образца UserDomain с указанными данными
-        /// </summary>
-        /// <param name="login"></param>
-        /// <param name="userName"></param>
-        /// <param name="email"></param>
-        /// <param name="phone"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
         private UserDomain CreateSampleUserDomain(string? login = "testLogin", string? userName = "Styx", string? email = "test@example.com", string? phone = "01234567891", string? password = "4444")
         {
             var errors = new List<string>();
@@ -48,7 +39,7 @@ namespace Infrastructure.Test
             var phoneNumberResult = PhoneNumber.TryCreate(phone, out var phoneNumberVo);
             var passwordHash = passwordHasher.HashPassword(password);
 
-            var (Domain, Message) = UserDomain.Create(0, loginResultVo, userName, passwordHash, emailAddressVo, phoneNumberVo, 1, 1);
+            var (Domain, Message) = UserDomain.Create(loginResultVo, userName, passwordHash, emailAddressVo, phoneNumberVo, 1, 1);
 
             TestContext.Out.WriteLine($"PasswordHash: '{passwordHash}'");
 
@@ -69,6 +60,8 @@ namespace Infrastructure.Test
 
             return Domain;
         }
+
+        #region Create
 
         [Test]
         public async Task CreateAsync_ShouldAddUserInMemoryDataBase_AndReturnAddedUserDomain()
@@ -112,6 +105,42 @@ namespace Infrastructure.Test
                 Assert.That(userInDB.PasswordHash,  Is.EqualTo(userDomainToCreate.PasswordHash));
             });
         }
+
+        #endregion
+
+
+        #region Get
+
+        [Test]
+        public async Task GetHashByLoginAsync_ShouldFindHash_AndReturnedHashFromStorage()
+        {
+            string secondLogin = "StorageLogin";
+            string password = "StoragePassword11!!";
+
+            var user = CreateSampleUserDomain(login: secondLogin, password: password);
+
+            string expectedHas = user.PasswordHash;
+
+            await _userRepository.CreateAsync(user);
+
+            var actualStorageHash = await _userRepository.GetHashByLoginAsync(user.Login);
+
+            TestContext.Out.WriteLine($"Новый хэш {expectedHas}");
+            TestContext.Out.WriteLine($"Старый хэш {actualStorageHash}");
+
+            Assert.That(actualStorageHash, Is.EqualTo(expectedHas));
+        }
+
+        [Test]
+        public void GetHashByLoginAsync_ShouldFindHash_AndNotReturnedHashFromStorage_AndThrowsArgumentNullException()
+        {
+            var ex = Assert.ThrowsAsync<ArgumentNullException>(async () => await _userRepository.GetHashByLoginAsync("login"));
+
+            Assert.That(ex.ParamName, Is.EqualTo("Пользователь не найден!!"));
+        }
+
+        #endregion
+
 
         #region ExistLogin
 

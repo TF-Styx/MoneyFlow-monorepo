@@ -29,74 +29,37 @@ namespace MoneyFlow.AuthenticationService.Infrastructure.Repositories
 
             await _context.Users.AddAsync(entity);
             await _context.SaveChangesAsync();
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Login == entity.Login && x.UserName == entity.UserName);
 
-            Login.TryCreate(entity.Login, out var login);
-            EmailAddress.TryCreate(entity.Email, out var email);
-            PhoneNumber.TryCreate(entity.Phone, out var phone);
+            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Login == entity.Login && x.UserName == entity.UserName);
 
-            var (User, Message) = UserDomain.Create(entity.IdUser, login, entity.UserName, entity.PasswordHash, email, phone, entity.IdGender, entity.IdRole);
+            var domain = UserDomain.Reconstitute(user.IdUser, user.Login, user.UserName, user.PasswordHash, user.Email, user.Phone, user.DateRegistration, user.DateEntry, user.DateUpdate, user.IdGender, user.IdRole);
 
-            return User;
+            return domain;
         }
 
-        //public async IAsyncEnumerable<UserDomain> GetAllStreamingAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
-        //{
-        //    var entitiesStream = _context.Users.AsNoTracking().AsAsyncEnumerable().WithCancellation(cancellationToken);
+        public async Task<string> GetHashByLoginAsync(string login)
+        {
+            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Login.ToLower() == login.ToLower());
 
-        //    await foreach (var entity in entitiesStream)
-        //    {
-        //        var (User, Message) = UserDomain.Create(entity.IdUser, entity.Login, entity.UserName, entity.PasswordHash, entity.Salt, entity.Email, entity.Phone, entity.DateRegistration, entity.DateEntry, entity.DateUpdate, entity.IdGender, entity.IdRole);
+            return user is null ? throw new ArgumentNullException("Пользователь не найден!!") : user.PasswordHash;
+        }
 
-        //        if (User is not null)
-        //            yield return User;
-        //    }
-        //}
+        public async Task<UserDomain?> GetUserByLoginAsync(string login)
+        {
+            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Login.ToLower() == login.ToLower());
 
-        //public async Task<UserDomain?> GetByIdAsync(int idUser)
-        //{
-        //    var entity = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.IdUser == idUser);
+            if (user is null)
+                return null;
 
-        //    var (User, Message) = UserDomain.Create(entity.IdUser, entity.Login, entity.UserName, entity.PasswordHash, entity.Salt, entity.Email, entity.Phone, entity.DateRegistration, entity.DateEntry, entity.DateUpdate, entity.IdGender, entity.IdRole);
-
-        //    return User;
-        //}
-
-        //public async Task<UserDomain?> UpdateAsync(UserDomain userDomain)
-        //{
-        //    var entity = await _context.Users.FirstOrDefaultAsync(x => x.IdUser == userDomain.IdUser);
-
-        //    entity.UserName = userDomain.UserName;
-        //    entity.PasswordHash = userDomain.PasswordHash;
-        //    entity.Salt = userDomain.Salt;
-        //    entity.Email = userDomain.Email;
-        //    entity.Phone = userDomain.Phone;
-        //    entity.DateUpdate = userDomain.DateUpdate;
-        //    entity.IdGender = userDomain.IdGender;
-        //    entity.IdRole = userDomain.IdRole;
-
-        //    var (User, Message) = UserDomain.Create(entity.IdUser, entity.Login, entity.UserName, entity.PasswordHash, entity.Salt, entity.Email, entity.Phone, entity.DateRegistration, entity.DateEntry, entity.DateUpdate, entity.IdGender, entity.IdRole);
-
-        //    await _context.SaveChangesAsync();
-
-        //    return User;
-        //}
-
-        //public async Task<int> DeleteAsync(int idUser)
-        //{
-        //    await _context.Users.Where(x => x.IdUser == idUser).ExecuteDeleteAsync();
-
-        //    await _context.SaveChangesAsync();
-
-        //    return idUser;
-        //}
+            return UserDomain.Reconstitute(user.IdUser, user.Login, user.UserName, user.PasswordHash, user.Email, user.Phone, user.DateRegistration, user.DateEntry, user.DateUpdate, user.IdGender, user.IdRole);
+        }
 
 
-        public async Task<bool> ExistByIdUserAsync(int idUser)  => await _context.Users.AnyAsync(x => x.IdUser == idUser);
+        public async Task<bool> ExistByIdUserAsync(int idUser)  => await _context.Users.AsNoTracking().AnyAsync(x => x.IdUser == idUser);
 
-        public async Task<bool> ExistByLoginAsync(string login) => await _context.Users.AnyAsync(x => x.Login.ToLower() == login.ToLower());
+        public async Task<bool> ExistByLoginAsync(string login) => await _context.Users.AsNoTracking().AnyAsync(x => x.Login.ToLower() == login.ToLower());
 
-        public async Task<bool> ExistByEmailAsync(string email) => await _context.Users.AnyAsync(x => x.Email.ToLower() == email.ToLower());
+        public async Task<bool> ExistByEmailAsync(string email) => await _context.Users.AsNoTracking().AnyAsync(x => x.Email.ToLower() == email.ToLower());
 
         public async Task<bool> ExistByPhoneAsync(string? phone)
         {

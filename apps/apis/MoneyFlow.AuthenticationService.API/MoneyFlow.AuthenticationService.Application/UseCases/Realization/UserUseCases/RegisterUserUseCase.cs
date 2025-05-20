@@ -11,19 +11,19 @@ using MoneyFlow.AuthenticationService.Domain.ValueObjects;
 
 namespace MoneyFlow.AuthenticationService.Application.UseCases.Realization.UserUseCases
 {
-    public class CreateUserUseCase : ICreateUserUseCase
+    public class RegisterUserUseCase : IRegisterUserUseCase
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
 
-        public CreateUserUseCase(IUserRepository userRepository, IPasswordHasher passwordHasher)
+        public RegisterUserUseCase(IUserRepository userRepository, IPasswordHasher passwordHasher)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
         }
 
         // TODO : Перенести валидацию в домайн модель
-        public async Task<RegisterUserResult> CreateAsync(RegisterUserCommand command)
+        public async Task<UserResult> RegisterAsync(RegisterUserCommand command)
         {
             // 1. Базовая валидация
             var validationError = new List<string>();
@@ -52,19 +52,19 @@ namespace MoneyFlow.AuthenticationService.Application.UseCases.Realization.UserU
                 validationError.AddRange(phoneNumberValidationResult.ErrorList);
 
             if (validationError.Any())
-                return RegisterUserResult.ValidationFailureResult(validationError, "Ошибка валидации!!");
+                return UserResult.ValidationFailureResult(validationError, "Ошибка валидации!!");
 
             // 2. Проверка на уникальность (например, логина и email)
             if (await _userRepository.ExistByLoginAsync(command.Login))
-                return RegisterUserResult.FailureResult(RegistrationErrorCode.LoginAlreadyTaken, 
+                return UserResult.FailureResult(ErrorCode.LoginAlreadyRegistered,
                     $"Пользователь с данным 'Login' <{command.Login}> уже существует!!");
 
             if (await _userRepository.ExistByEmailAsync(command.Email))
-                return RegisterUserResult.FailureResult(RegistrationErrorCode.EmailAlreadyRegistered, 
+                return UserResult.FailureResult(ErrorCode.EmailAlreadyRegistered, 
                     $"Пользователь с данным 'Email' <{command.Email}> уже существует!!");
 
             if (await _userRepository.ExistByPhoneAsync(command.Phone))
-                return RegisterUserResult.FailureResult(RegistrationErrorCode.PhoneAlreadyRegistered, 
+                return UserResult.FailureResult(ErrorCode.PhoneAlreadyRegistered, 
                     $"Пользователь с данным 'Phone' <{command.Phone}> уже существует!!");
 
             // 3. Хэширование пароля
@@ -75,7 +75,6 @@ namespace MoneyFlow.AuthenticationService.Application.UseCases.Realization.UserU
 
             var (Domain, Message) = UserDomain.Create
                 (
-                    0,
                     login,
                     command.UserName,
                     passwordHash,
@@ -86,24 +85,23 @@ namespace MoneyFlow.AuthenticationService.Application.UseCases.Realization.UserU
                 );
 
             if (Domain is null)
-                return RegisterUserResult.FailureResult(RegistrationErrorCode.DomainCreationError, Message);
+                return UserResult.FailureResult(ErrorCode.DomainCreationError, Message);
 
             try
             {
                 var createUserDomain = await _userRepository.CreateAsync(Domain);
 
                 if (createUserDomain is null)
-                    return RegisterUserResult.FailureResult(RegistrationErrorCode.SaveUserError, "Ошибка регистрации пользователя!!");
+                    return UserResult.FailureResult(ErrorCode.SaveUserError, "Ошибка регистрации пользователя!!");
 
-                // Маппинг доменной сущности в UserDto для ответа
                 var userDTO = createUserDomain.ToDTO();
 
-                return RegisterUserResult.SuccessResult(userDTO);
+                return UserResult.SuccessResult(userDTO);
             }
             catch (Exception ex)
             {
                 // Логирование ошибки ex
-                return RegisterUserResult.FailureResult(RegistrationErrorCode.UnknownError, "Во время регистрации произошла непредвиденная ошибка!!");
+                return UserResult.FailureResult(ErrorCode.UnknownError, "Во время регистрации произошла непредвиденная ошибка!!");
             }
         }
     }

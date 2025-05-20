@@ -25,7 +25,7 @@ namespace Domain.Test
                     TestContext.Out.WriteLine($"[SETUP INFO from PhoneNumber.TryCreate] {phoneResult.ErrorList[i]}");
 
 
-            var (Domain, Message) = UserDomain.Create(0, login, "Гриша", "wrigsrgsrf", emailAddress, phoneNumber, 1, 1);
+            var (Domain, Message) = UserDomain.Create(login, "Гриша", "wrigsrgsrf", emailAddress, phoneNumber, 1, 1);
 
             if (Domain == null)
                 TestContext.Out.WriteLine($"[SETUP INFO from UserDomain.Create] {Message}");
@@ -53,7 +53,7 @@ namespace Domain.Test
                     TestContext.Out.WriteLine($"[SETUP INFO from PhoneNumber.TryCreate] {phoneResult.ErrorList[i]}");
 
 
-            var (Domain, Message) = UserDomain.Create(0, login, "", "", emailAddress, phoneNumber, 1, 1);
+            var (Domain, Message) = UserDomain.Create(login, "", "", emailAddress, phoneNumber, 1, 1);
 
             if (Domain == null)
                 TestContext.Out.WriteLine($"[SETUP INFO from UserDomain.Create] {Message}");

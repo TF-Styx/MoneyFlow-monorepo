@@ -16,7 +16,9 @@ namespace MoneyFlow.AuthenticationService.Application.Extension
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped<ICreateUserUseCase,           CreateUserUseCase>();
+            services.AddScoped<IRegisterUserUseCase,        RegisterUserUseCase>();
+            services.AddScoped<IAuthenticateUserUseCase,    AuthenticateUserUseCase>();
+            services.AddScoped<IGetUserByLoginUseCase,      GetUserByLoginUseCase>();
             //services.AddTransient<IGetAllStreamingUserUseCase,  GetAllStreamingUserUseCase>();
             //services.AddTransient<IGetByIdUserUseCase,          GetByIdUserUseCase>();
             //services.AddTransient<IUpdateUserUseCase,           UpdateUserUseCase>();
@@ -36,7 +38,8 @@ namespace MoneyFlow.AuthenticationService.Application.Extension
 
             services.AddSingleton<IPasswordHasher,              ArgonPasswordHasher>();
 
-            services.AddSingleton<IDefaultRegistrationErrorMessageProvider, DefaultRegistrationErrorMessageProvider>();
+            services.AddSingleton<IDefaultErrorMessageProvider, DefaultRegistrationErrorMessageProvider>();
+            services.AddSingleton<IDefaultErrorMessageProvider, DefaultAuthenticateErrorMessageProvider>();
 
             return services;
         }

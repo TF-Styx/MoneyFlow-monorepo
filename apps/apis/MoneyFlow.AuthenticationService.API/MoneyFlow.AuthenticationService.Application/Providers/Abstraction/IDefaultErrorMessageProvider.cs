@@ -2,8 +2,8 @@
 
 namespace MoneyFlow.AuthenticationService.Application.Providers.Abstraction
 {
-    public interface IDefaultRegistrationErrorMessageProvider
+    public interface IDefaultErrorMessageProvider
     {
-        string GetMessage(RegistrationErrorCode errorCode);
+        string GetMessage(ErrorCode errorCode);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace MoneyFlow.AuthenticationService.Application.Enums
 {
-    public enum RegistrationErrorCode
+    public enum ErrorCode
     {
         None,
 
@@ -12,9 +12,11 @@
         DomainCreationError,
 
         // Специфичные для регистрации
-        LoginAlreadyTaken,
+        LoginAlreadyRegistered,
+        LoginNotExist,
         EmailAlreadyRegistered,
         PhoneAlreadyRegistered,
+        InvalidPassword,
         WeakPassword,
         InvalidRole, // Если роль проверяется
         InvalidAccountStatus, // Если статус проверяется

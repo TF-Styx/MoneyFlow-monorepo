@@ -2,30 +2,33 @@
 
 namespace MoneyFlow.AuthenticationService.Application.DTOs.Results
 {
-    public class RegisterUserResult
+    public class UserResult
     {
         public bool Success { get; private set; }
         public UserDTO? User { get; private set; }
-        public RegistrationErrorCode? ErrorCode { get; private set; } // Используем enum
+        public ErrorCode? ErrorCode { get; private set; } // Используем enum
         public string? ErrorMessage { get; private set; } // Можно оставить для дефолтного сообщения или деталей
         public List<string> ValidationErrors { get; private set; } = new List<string>();
         //public List<string> DataBaseErrors { get; private set; } = new List<string>();
 
         // Фабричные методы
-        public static RegisterUserResult SuccessResult(UserDTO user)
+        public static UserResult SuccessResult(UserDTO user)
             => new() { Success = true, User = user };
 
-        public static RegisterUserResult FailureResult(RegistrationErrorCode errorCode, string? message = null)
-            => new() { Success = false, User = null, ErrorCode = errorCode, ErrorMessage = message ?? GetDefaultMessage(errorCode) };
+        public static UserResult SuccessResult()
+            => new() { Success = true };
 
-        public static RegisterUserResult ValidationFailureResult(List<string> errors, string? generalMessage = null)
+        public static UserResult FailureResult(ErrorCode errorCode, string? message = null)
+            => new() { Success = false, User = null, ErrorCode = errorCode, ErrorMessage = message };
+
+        public static UserResult ValidationFailureResult(List<string> errors, string? generalMessage = null)
             => new()
             {
                 Success = false,
                 User = null,
-                ErrorCode = RegistrationErrorCode.ValidationFailed,
+                ErrorCode = Enums.ErrorCode.ValidationFailed,
                 ValidationErrors = errors,
-                ErrorMessage = generalMessage ?? GetDefaultMessage(RegistrationErrorCode.ValidationFailed)
+                ErrorMessage = generalMessage
             };
 
         //public static RegisterUserResult DataBaseFailureResult(List<string> errors, string? generalMessage = null)
@@ -40,17 +43,17 @@ namespace MoneyFlow.AuthenticationService.Application.DTOs.Results
         //    };
 
         // Опционально: метод для получения дефолтных сообщений
-        private static string GetDefaultMessage(RegistrationErrorCode errorCode)
-        {
-            return errorCode switch
-            {
-                RegistrationErrorCode.LoginAlreadyTaken => "This login is already taken.",
-                RegistrationErrorCode.EmailAlreadyRegistered => "This email is already registered.",
-                RegistrationErrorCode.WeakPassword => "The password does not meet complexity requirements.",
-                RegistrationErrorCode.ValidationFailed => "One or more validation errors occurred.",
-                // ... другие сообщения
-                _ => "An unexpected error occurred."
-            };
-        }
+        //private static string GetDefaultMessage(ErrorCode errorCode)
+        //{
+        //    return errorCode switch
+        //    {
+        //        Enums.ErrorCode.LoginAlreadyRegistered => "This login is already taken.",
+        //        Enums.ErrorCode.EmailAlreadyRegistered => "This email is already registered.",
+        //        Enums.ErrorCode.WeakPassword => "The password does not meet complexity requirements.",
+        //        Enums.ErrorCode.ValidationFailed => "One or more validation errors occurred.",
+        //        // ... другие сообщения
+        //        _ => "An unexpected error occurred."
+        //    };
+        //}
     }
 }

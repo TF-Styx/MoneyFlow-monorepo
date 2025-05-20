@@ -10,18 +10,18 @@ using Moq;
 namespace Application.Test
 {
     [TestFixture]
-    internal class RegisterUserUseCaseTests
+    internal class RegisterUserUseCaseTest
     {
         private Mock<IUserRepository> _userRepositoryMock;
         private Mock<IPasswordHasher> _passwordHasherMock;
-        private CreateUserUseCase _useCase;
+        private RegisterUserUseCase _useCase;
 
         [SetUp]
         public void SetUp()
         {
             _userRepositoryMock = new Mock<IUserRepository>();
             _passwordHasherMock = new Mock<IPasswordHasher>();
-            _useCase = new CreateUserUseCase(_userRepositoryMock.Object, _passwordHasherMock.Object);
+            _useCase = new RegisterUserUseCase(_userRepositoryMock.Object, _passwordHasherMock.Object);
         }
 
         private RegisterUserCommand CreateSampleRegisterUserCommand(string? login = "Styx", string? userName = "Семён", string password = "ValidPass123.!", string? email = "ValidEmail@yandex.ru", string? phone = "+7004001010")
@@ -51,11 +51,11 @@ namespace Application.Test
             EmailAddress.TryCreate(command.Email, out var email);
             PhoneNumber.TryCreate(command.Phone, out var phone);
 
-            var (Domain, Message) = UserDomain.Create(0, login, command.UserName, "hashedPassword", email, phone, 1, 1);
+            var (Domain, Message) = UserDomain.Create(login, command.UserName, "hashedPassword", email, phone, 1, 1);
 
             _userRepositoryMock.Setup(x => x.CreateAsync(It.IsAny<UserDomain>())).ReturnsAsync(Domain);
 
-            var result = await _useCase.CreateAsync(command);
+            var result = await _useCase.RegisterAsync(command);
 
             Assert.Multiple(() =>
             {
@@ -72,7 +72,7 @@ namespace Application.Test
         {
             var command = CreateSampleRegisterUserCommand(login: "Не авлидный логин", password: "qqqq", email: "Novalid!yandex.com");
 
-            var result = await _useCase.CreateAsync(command);
+            var result = await _useCase.RegisterAsync(command);
 
             if (result.ValidationErrors.Any())
                 for (int i = 0; i < result.ValidationErrors.Count; i++)
@@ -82,7 +82,7 @@ namespace Application.Test
             {
                 Assert.That(result.Success, Is.False, "При регистрации произошла ошибка, 'такой логин уже занят'!!");
                 Assert.That(result.User, Is.Null, "Пользователь должен быть пустым!!");
-                Assert.That(result.ErrorCode, Is.EqualTo(RegistrationErrorCode.ValidationFailed), "Код ошибок не должен быть пустым");
+                Assert.That(result.ErrorCode, Is.EqualTo(ErrorCode.ValidationFailed), "Код ошибок не должен быть пустым");
                 Assert.That(result.ErrorMessage, Is.Not.Null, "Сообщение ошибки не должно быть пустым");
                 Assert.That(result.ValidationErrors, Is.Not.Null, "Список валдиционных ошибки не должны быть пустыми или иметь пустую ссылку");
             });
@@ -95,7 +95,7 @@ namespace Application.Test
 
             _userRepositoryMock.Setup(x => x.ExistByLoginAsync(It.IsAny<string>())).ReturnsAsync(true);
 
-            var result = await _useCase.CreateAsync(command);
+            var result = await _useCase.RegisterAsync(command);
 
             if (!result.Success)
                 TestContext.Out.WriteLine(result.ErrorMessage);
@@ -105,7 +105,7 @@ namespace Application.Test
                 Assert.That(result.Success, Is.False, "Свойство 'Success' должно быть FALSE");
                 Assert.That(result.User, Is.Null, "Пользователь должен быть NULL");
                 Assert.That(result.ErrorCode, Is.Not.Null, "Ошибка не должна быть Null");
-                Assert.That(result.ErrorCode, Is.EqualTo(RegistrationErrorCode.LoginAlreadyTaken), "Код ошибки должен быть RegistrationErrorCode.LoginAlreadyTaken");
+                Assert.That(result.ErrorCode, Is.EqualTo(ErrorCode.LoginAlreadyRegistered), "Код ошибки должен быть RegistrationErrorCode.LoginAlreadyTaken");
             });
         }
 
@@ -116,7 +116,7 @@ namespace Application.Test
 
             _userRepositoryMock.Setup(x => x.ExistByEmailAsync(It.IsAny<string>())).ReturnsAsync(true);
 
-            var result = await _useCase.CreateAsync(command);
+            var result = await _useCase.RegisterAsync(command);
 
             if (!result.Success)
                 TestContext.Out.WriteLine(result.ErrorMessage);
@@ -126,7 +126,7 @@ namespace Application.Test
                 Assert.That(result.Success, Is.False, "Свойство 'Success' должно быть FALSE");
                 Assert.That(result.User, Is.Null, "Пользователь должен быть NULL");
                 Assert.That(result.ErrorCode, Is.Not.Null, "Ошибка не должна быть Null");
-                Assert.That(result.ErrorCode, Is.EqualTo(RegistrationErrorCode.EmailAlreadyRegistered), "Код ошибки должен быть RegistrationErrorCode.EmailAlreadyRegistered");
+                Assert.That(result.ErrorCode, Is.EqualTo(ErrorCode.EmailAlreadyRegistered), "Код ошибки должен быть RegistrationErrorCode.EmailAlreadyRegistered");
             });
         }
 
@@ -137,7 +137,7 @@ namespace Application.Test
 
             _userRepositoryMock.Setup(x => x.ExistByPhoneAsync(It.IsAny<string>())).ReturnsAsync(true);
 
-            var result = await _useCase.CreateAsync(command);
+            var result = await _useCase.RegisterAsync(command);
 
             if (!result.Success)
                 TestContext.Out.WriteLine(result.ErrorMessage);
@@ -147,7 +147,7 @@ namespace Application.Test
                 Assert.That(result.Success, Is.False, "Свойство 'Success' должно быть FALSE");
                 Assert.That(result.User, Is.Null, "Пользователь должен быть NULL");
                 Assert.That(result.ErrorCode, Is.Not.Null, "Ошибка не должна быть Null");
-                Assert.That(result.ErrorCode, Is.EqualTo(RegistrationErrorCode.PhoneAlreadyRegistered), "Код ошибки должен быть RegistrationErrorCode.PhoneAlreadyRegistered");
+                Assert.That(result.ErrorCode, Is.EqualTo(ErrorCode.PhoneAlreadyRegistered), "Код ошибки должен быть RegistrationErrorCode.PhoneAlreadyRegistered");
             });
         }
     }

@@ -6,20 +6,7 @@ namespace MoneyFlow.AuthenticationService.Domain.DomainModels
 {
     public class UserDomain
     {
-        private UserDomain(int idUser, string login, string userName, string passwordHash, string email, string? phone, DateTime dateRegistration, DateTime dateEntry, DateTime dateUpdate, int? idGender, int idRole)
-        {
-            IdUser = idUser;
-            Login = login;
-            UserName = userName;
-            PasswordHash = passwordHash;
-            Email = email;
-            Phone = phone;
-            DateRegistration = dateRegistration;
-            DateEntry = dateEntry;
-            DateUpdate = dateUpdate;
-            IdGender = idGender;
-            IdRole = idRole;
-        }
+        private UserDomain() { }
 
         public int IdUser { get; private set; }
         public string Login { get; private set; } = null!;
@@ -33,7 +20,7 @@ namespace MoneyFlow.AuthenticationService.Domain.DomainModels
         public int? IdGender { get; private set; }
         public int IdRole { get; private set; }
 
-        public static (UserDomain? UserDomain, string Message) Create(int idUser, Login? login, string userName, string passwordHash, EmailAddress? email, PhoneNumber? phone, int? idGender, int idRole)
+        public static (UserDomain? UserDomain, string Message) Create(Login? login, string userName, string passwordHash, EmailAddress? email, PhoneNumber? phone, int? idGender, int idRole)
         {
             string message = string.Empty;
 
@@ -79,9 +66,38 @@ namespace MoneyFlow.AuthenticationService.Domain.DomainModels
             var dateEntry = DateTime.UtcNow;
             var dateUpdate = DateTime.UtcNow;
 
-            var domain = new UserDomain(idUser, login.Value, userName, passwordHash, email.Value, phone.Value, dateRegistration, dateEntry, dateUpdate, idGender, idRole);
-
+            var domain = new UserDomain()
+            {
+                Login = login.Value,
+                UserName = userName,
+                PasswordHash = passwordHash,
+                Email = email.Value,
+                Phone = phone.Value,
+                IdGender = idGender,
+                IdRole = idRole,
+            };
             return (domain, message);
+        }
+
+        public static UserDomain Reconstitute(int idUser, string login, string userName, 
+                                              string passwordHash, string email, string? phone, 
+                                              DateTime dateRegistration, DateTime dateEntry, DateTime dateUpdate, 
+                                              int? idGender, int idRole)
+        {
+            return new UserDomain()
+            {
+                IdUser = idUser,
+                Login = login,
+                UserName = userName,
+                PasswordHash = passwordHash,
+                Email = email,
+                Phone = phone,
+                DateRegistration = dateRegistration,
+                DateEntry = dateEntry,
+                DateUpdate = dateUpdate,
+                IdGender = idGender,
+                IdRole = idRole
+            };
         }
     }
 }

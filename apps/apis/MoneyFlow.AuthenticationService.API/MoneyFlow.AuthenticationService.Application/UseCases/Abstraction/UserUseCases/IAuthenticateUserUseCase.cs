@@ -3,8 +3,8 @@ using MoneyFlow.AuthenticationService.Application.DTOs.Results;
 
 namespace MoneyFlow.AuthenticationService.Application.UseCases.Abstraction.UserUseCases
 {
-    public interface ICreateUserUseCase
+    public interface IAuthenticateUserUseCase
     {
-        Task<RegisterUserResult> CreateAsync(RegisterUserCommand command);
+        Task<UserResult> AuthenticateAsync(AuthenticateUserCommand command);
     }
 }
