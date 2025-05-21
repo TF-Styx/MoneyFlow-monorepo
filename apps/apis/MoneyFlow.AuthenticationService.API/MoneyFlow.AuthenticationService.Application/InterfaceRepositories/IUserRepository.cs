@@ -16,6 +16,7 @@ namespace MoneyFlow.AuthenticationService.Application.InterfaceRepositories
         Task<string> GetHashByLoginAsync(string login);
         Task<UserDomain?> GetUserByLoginAsync(string login);
 
+        Task UpdateDataEntryAsync(int idUser);
         Task<bool> UpdatePasswordAsync(string email, string login, string newHash);
 
         Task<bool> ExistByIdUserAsync(int idUser);

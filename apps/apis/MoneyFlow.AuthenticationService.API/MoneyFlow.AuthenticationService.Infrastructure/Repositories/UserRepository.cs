@@ -66,11 +66,16 @@ namespace MoneyFlow.AuthenticationService.Infrastructure.Repositories
 
         #region Update
 
+        public async Task UpdateDataEntryAsync(int idUser)
+        {
+            var user = await _context.Users.Where(x => x.IdUser == idUser).ExecuteUpdateAsync(setters => setters.SetProperty(de => de.DateEntry, DateTime.UtcNow));
+        }
+
         public async Task<bool> UpdatePasswordAsync(string email, string login, string newHash)
         {
             var updatedRows = await _context.Users
                 .Where(x => x.Login.ToLower() == login.ToLower() && x.Email.ToLower() == email.ToLower())
-                    .ExecuteUpdateAsync(setters => setters.SetProperty(p => p.PasswordHash, newHash));
+                    .ExecuteUpdateAsync(setters => setters.SetProperty(p => p.PasswordHash, newHash).SetProperty(du => du.DateUpdate, DateTime.UtcNow));
 
             if (updatedRows > 0)
                 return true;

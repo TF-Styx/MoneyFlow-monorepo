@@ -51,6 +51,8 @@ namespace MoneyFlow.AuthenticationService.Application.UseCases.Realization.UserU
                 if (!verifiableHash)
                     return UserResult.FailureResult(ErrorCode.InvalidPassword, "Указанный пароль не верен!!");
 
+                await _userRepository.UpdateDataEntryAsync(userDomain.IdUser);
+
                 return UserResult.SuccessResult(userDomain.ToDTO());
             }
             catch (Exception)
