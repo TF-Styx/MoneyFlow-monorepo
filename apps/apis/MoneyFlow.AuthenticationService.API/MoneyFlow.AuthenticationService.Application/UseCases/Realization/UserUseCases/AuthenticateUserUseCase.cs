@@ -3,6 +3,7 @@ using MoneyFlow.AuthenticationService.Application.DTOs.Results;
 using MoneyFlow.AuthenticationService.Application.Enums;
 using MoneyFlow.AuthenticationService.Application.InterfaceRepositories;
 using MoneyFlow.AuthenticationService.Application.Interfaces.Abstraction;
+using MoneyFlow.AuthenticationService.Application.Mapper;
 using MoneyFlow.AuthenticationService.Application.UseCases.Abstraction.UserUseCases;
 
 namespace MoneyFlow.AuthenticationService.Application.UseCases.Realization.UserUseCases
@@ -39,13 +40,18 @@ namespace MoneyFlow.AuthenticationService.Application.UseCases.Realization.UserU
 
             try
             {
+                var userDomain = await _userRepository.GetUserByLoginAsync(command.Login);
+
+                if (userDomain is null)
+                    return UserResult.FailureResult(ErrorCode.LoginNotExist, "Пользователь не был найден!!");
+
                 var storageHash = await _userRepository.GetHashByLoginAsync(command.Login);
                 var verifiableHash = _passwordHasher.VerifyPassword(command.Password, storageHash);
 
                 if (!verifiableHash)
                     return UserResult.FailureResult(ErrorCode.InvalidPassword, "Указанный пароль не верен!!");
 
-                return UserResult.SuccessResult();
+                return UserResult.SuccessResult(userDomain.ToDTO());
             }
             catch (Exception)
             {

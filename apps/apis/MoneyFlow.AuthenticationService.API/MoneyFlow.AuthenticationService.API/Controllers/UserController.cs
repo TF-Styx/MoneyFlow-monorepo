@@ -19,17 +19,20 @@ namespace MoneyFlow.AuthenticationService.API.Controllers
     {
         private readonly IRegisterUserUseCase _registerUserUseCase;
         private readonly IAuthenticateUserUseCase _authenticateUserUseCase;
+        private readonly IRecoveryAccessUserUseCase _recoveryAccessUserUseCase;
         private readonly IGetUserByLoginUseCase _getUserByLoginUseCase;
         private readonly IDefaultErrorMessageProvider _defaultRegistrationErrorMessageProvider;
         private readonly IDefaultErrorMessageProvider _defaultAuthenticateErrorMessageProvider;
 
         public UserController(IRegisterUserUseCase createUserUseCase, 
-                              IAuthenticateUserUseCase authenticateUserUseCase, 
+                              IAuthenticateUserUseCase authenticateUserUseCase,
+                              IRecoveryAccessUserUseCase recoveryAccessUserUseCase,
                               IGetUserByLoginUseCase getUserByLoginUseCase,
                               IEnumerable<IDefaultErrorMessageProvider> messageProvider)
         {
             _registerUserUseCase = createUserUseCase;
             _authenticateUserUseCase = authenticateUserUseCase;
+            _recoveryAccessUserUseCase = recoveryAccessUserUseCase;
             _getUserByLoginUseCase = getUserByLoginUseCase;
             //_defaultRegistrationErrorMessageProvider = messageProvider.ToList()[0];
             //_defaultAuthenticateErrorMessageProvider = messageProvider.ToList()[1];
@@ -117,7 +120,7 @@ namespace MoneyFlow.AuthenticationService.API.Controllers
         }
 
         [HttpPost("authenticate")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Authenticate([FromBody] AuthenticateUserApiRequest apiRequest)
@@ -217,6 +220,92 @@ namespace MoneyFlow.AuthenticationService.API.Controllers
             };
 
             return StatusCode(StatusCodes.Status200OK, userAuthResponse);
+        }
+
+        [HttpPost("recovery-access")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> RecoveryAccess([FromBody] RecoveryAccessUserApiRequest apiRequest)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            RecoveryAccessUserCommand command = apiRequest.ToMap();
+
+            try
+            {
+                var result = await _recoveryAccessUserUseCase.RecoveryAccessAsync(command);
+
+                if (!result.Success)
+                {
+                    Func<IActionResult> errorResponse = result.ErrorCode switch
+                    {
+                        // Ошибка валидации
+                        ErrorCode.ValidationFailed => () =>
+                        {
+                            if (result.ValidationErrors.Any())
+                            {
+                                var problemDetails = new ValidationProblemDetails
+                                {
+                                    Title = result.ErrorMessage,
+                                    Status = StatusCodes.Status400BadRequest,
+                                    Detail = "Не верно указаны поля 'Email', 'Login' и 'Password'!!"
+                                };
+
+                                problemDetails.Errors.Add(ErrorCode.ValidationFailed.ToString(), result.ValidationErrors.ToArray());
+
+                                return BadRequest(problemDetails);
+
+                            }
+
+                            return BadRequest(new ErrorResponse
+                            {
+                                ErrorCode = result.ErrorCode.ToString()!,
+                                Message = result.ErrorMessage ?? _defaultAuthenticateErrorMessageProvider.GetMessage(result.ErrorCode.Value)
+                            });
+                        },
+
+                        // Ошибка логина
+                        ErrorCode.LoginNotExist => () => Conflict(new ErrorResponse
+                        {
+                            ErrorCode = result.ErrorCode.ToString()!,
+                            Message = result.ErrorMessage ?? _defaultAuthenticateErrorMessageProvider.GetMessage(result.ErrorCode.Value)
+                        }),
+
+                        // Ошибка почтового адреса
+                        ErrorCode.EmailNotExist => () => Conflict(new ErrorResponse
+                        {
+                            ErrorCode = result.ErrorCode.ToString()!,
+                            Message = result.ErrorMessage ?? _defaultAuthenticateErrorMessageProvider.GetMessage(result.ErrorCode.Value)
+                        }),
+
+                        // Ошибки указывающие на проблемы на стороне сервера
+                        ErrorCode.SaveUserError or ErrorCode.UnknownError or _ => () =>
+                        {
+                            // TODO : Добавить логи
+                            // Здесь важно залогировать полную информацию
+
+                            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse
+                            {
+                                ErrorCode = result.ErrorCode?.ToString() ?? ErrorCode.UnknownError.ToString(),
+                                Message = "Во время восстановления пароля произошла ошибка!!\nПожалуйста попробуйте позже."
+                            });
+                        }
+                    };
+                    return errorResponse.Invoke();
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse
+                {
+                    ErrorCode = ErrorCode.UnknownError.ToString(),
+                    Message = "Во время восстановления пароля произошла ошибка!!\nПожалуйста попробуйте позже. Или обратитесь в поддержку."
+                });
+            }
+
+            return StatusCode(StatusCodes.Status200OK, true);
         }
     }
 }

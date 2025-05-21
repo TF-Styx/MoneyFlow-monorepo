@@ -11,6 +11,8 @@ namespace MoneyFlow.AuthenticationService.Infrastructure.Repositories
     {
         private readonly Context _context = context;
 
+        #region Create
+
         public async Task<UserDomain> CreateAsync(UserDomain userDomain)
         {
             var entity = new User
@@ -37,6 +39,11 @@ namespace MoneyFlow.AuthenticationService.Infrastructure.Repositories
             return domain;
         }
 
+        #endregion
+
+
+        #region Get
+
         public async Task<string> GetHashByLoginAsync(string login)
         {
             var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Login.ToLower() == login.ToLower());
@@ -54,6 +61,27 @@ namespace MoneyFlow.AuthenticationService.Infrastructure.Repositories
             return UserDomain.Reconstitute(user.IdUser, user.Login, user.UserName, user.PasswordHash, user.Email, user.Phone, user.DateRegistration, user.DateEntry, user.DateUpdate, user.IdGender, user.IdRole);
         }
 
+        #endregion
+
+
+        #region Update
+
+        public async Task<bool> UpdatePasswordAsync(string email, string login, string newHash)
+        {
+            var updatedRows = await _context.Users
+                .Where(x => x.Login.ToLower() == login.ToLower() && x.Email.ToLower() == email.ToLower())
+                    .ExecuteUpdateAsync(setters => setters.SetProperty(p => p.PasswordHash, newHash));
+
+            if (updatedRows > 0)
+                return true;
+            else
+                return false;
+        }
+
+        #endregion
+
+
+        #region Exist
 
         public async Task<bool> ExistByIdUserAsync(int idUser)  => await _context.Users.AsNoTracking().AnyAsync(x => x.IdUser == idUser);
 
@@ -68,5 +96,7 @@ namespace MoneyFlow.AuthenticationService.Infrastructure.Repositories
 
             return await _context.Users.AnyAsync(x => x.Phone == phone);
         }
+
+        #endregion
     }
 }

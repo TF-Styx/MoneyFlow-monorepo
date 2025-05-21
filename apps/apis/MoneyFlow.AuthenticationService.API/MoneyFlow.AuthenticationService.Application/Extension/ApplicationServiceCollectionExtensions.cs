@@ -19,6 +19,7 @@ namespace MoneyFlow.AuthenticationService.Application.Extension
             services.AddScoped<IRegisterUserUseCase,        RegisterUserUseCase>();
             services.AddScoped<IAuthenticateUserUseCase,    AuthenticateUserUseCase>();
             services.AddScoped<IGetUserByLoginUseCase,      GetUserByLoginUseCase>();
+            services.AddScoped<IRecoveryAccessUserUseCase,  RecoveryAccessUserUseCase>();
             //services.AddTransient<IGetAllStreamingUserUseCase,  GetAllStreamingUserUseCase>();
             //services.AddTransient<IGetByIdUserUseCase,          GetByIdUserUseCase>();
             //services.AddTransient<IUpdateUserUseCase,           UpdateUserUseCase>();

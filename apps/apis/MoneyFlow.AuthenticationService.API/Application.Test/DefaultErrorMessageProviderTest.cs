@@ -47,6 +47,7 @@ namespace Application.Test
         public void AuthenticateErrorMessageProvider_GetMessage_ReturnStringMessage()
         {
             var loginNotExist = _authenticateErrorMessage.GetMessage(ErrorCode.LoginNotExist);
+            var emailNotExist = _authenticateErrorMessage.GetMessage(ErrorCode.EmailNotExist);
             var invalidPassword = _authenticateErrorMessage.GetMessage(ErrorCode.InvalidPassword);
             var validationFailed = _authenticateErrorMessage.GetMessage(ErrorCode.ValidationFailed);
             var saveUserError = _authenticateErrorMessage.GetMessage(ErrorCode.SaveUserError);
@@ -55,6 +56,7 @@ namespace Application.Test
             Assert.Multiple(() =>
             {
                 Assert.That(loginNotExist, Is.EqualTo("Данный логин не существует."));
+                Assert.That(emailNotExist, Is.EqualTo("Данный почтовый адрес не существует."));
                 Assert.That(invalidPassword, Is.EqualTo("Указанный пароль не верен."));
                 Assert.That(validationFailed, Is.EqualTo("Одно или несколько полей не прошли валидацию."));
                 Assert.That(saveUserError, Is.EqualTo("Ошибка при сохранении пользователя в базе данных."));

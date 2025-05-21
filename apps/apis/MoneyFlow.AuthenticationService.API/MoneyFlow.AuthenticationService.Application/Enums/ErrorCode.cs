@@ -15,6 +15,7 @@
         LoginAlreadyRegistered,
         LoginNotExist,
         EmailAlreadyRegistered,
+        EmailNotExist,
         PhoneAlreadyRegistered,
         InvalidPassword,
         WeakPassword,

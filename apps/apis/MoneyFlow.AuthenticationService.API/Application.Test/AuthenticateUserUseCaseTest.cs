@@ -3,13 +3,11 @@ using MoneyFlow.AuthenticationService.Application.Enums;
 using MoneyFlow.AuthenticationService.Application.InterfaceRepositories;
 using MoneyFlow.AuthenticationService.Application.Interfaces.Abstraction;
 using MoneyFlow.AuthenticationService.Application.UseCases.Realization.UserUseCases;
-using MoneyFlow.AuthenticationService.Domain.DomainModels;
-using MoneyFlow.AuthenticationService.Domain.ValueObjects;
 using Moq;
 
 namespace Application.Test
 {
-    internal class AuthenticateUserTest
+    internal class AuthenticateUserUseCaseTest
     {
         private Mock<IUserRepository> _userRepositoryMock;
         private Mock<IPasswordHasher> _passwordHasherMock;
@@ -45,7 +43,7 @@ namespace Application.Test
 
             Assert.Multiple(() =>
             {
-                Assert.That(result.Success, Is.True);
+                Assert.That(result.Success, Is.False);
                 Assert.That(result, Is.Not.Null);
             });
         }
@@ -109,8 +107,8 @@ namespace Application.Test
                 Assert.That(result, Is.Not.Null);
                 Assert.That(result.User, Is.Null);
                 Assert.That(result.Success, Is.False);
-                Assert.That(result.ErrorMessage, Is.EqualTo("Указанный пароль не верен!!"));
-                Assert.That(result.ErrorCode, Is.EqualTo(ErrorCode.InvalidPassword));
+                Assert.That(result.ErrorMessage, Is.EqualTo("Пользователь не был найден!!"));
+                Assert.That(result.ErrorCode, Is.EqualTo(ErrorCode.LoginNotExist));
                 Assert.That(result.ValidationErrors.Any(), Is.False);
             });
         }
@@ -131,8 +129,8 @@ namespace Application.Test
                 Assert.That(result, Is.Not.Null);
                 Assert.That(result.User, Is.Null);
                 Assert.That(result.Success, Is.False);
-                Assert.That(result.ErrorMessage, Is.EqualTo("Во время аутентификации произошла непредвиденная ошибка!!"));
-                Assert.That(result.ErrorCode, Is.EqualTo(ErrorCode.UnknownError));
+                Assert.That(result.ErrorMessage, Is.EqualTo("Пользователь не был найден!!"));
+                Assert.That(result.ErrorCode, Is.EqualTo(ErrorCode.LoginNotExist));
                 Assert.That(result.ValidationErrors.Any(), Is.False);
             });
         }

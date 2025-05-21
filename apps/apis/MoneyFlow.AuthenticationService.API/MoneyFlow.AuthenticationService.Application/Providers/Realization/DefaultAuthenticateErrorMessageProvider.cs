@@ -10,6 +10,7 @@ namespace MoneyFlow.AuthenticationService.Application.Providers.Realization
             return errorCode switch
             {
                 ErrorCode.LoginNotExist => "Данный логин не существует.",
+                ErrorCode.EmailNotExist => "Данный почтовый адрес не существует.",
                 ErrorCode.InvalidPassword => "Указанный пароль не верен.",
                 ErrorCode.ValidationFailed => "Одно или несколько полей не прошли валидацию.",
                 ErrorCode.SaveUserError => "Ошибка при сохранении пользователя в базе данных.",
