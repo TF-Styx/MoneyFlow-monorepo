@@ -1,0 +1,23 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-env
+WORKDIR /app
+
+COPY MoneyFlow.AuthenticationService.API/*.csproj ./MoneyFlow.AuthenticationService.API/
+COPY MoneyFlow.AuthenticationService.Application/*.csproj ./MoneyFlow.AuthenticationService.Application/
+COPY MoneyFlow.AuthenticationService.Domain/*.csproj ./MoneyFlow.AuthenticationService.Domain/
+COPY MoneyFlow.AuthenticationService.Infrastructure/*.csproj ./MoneyFlow.AuthenticationService.Infrastructure/
+
+RUN dotnet restore "MoneyFlow.AuthenticationService.API/MoneyFlow.AuthenticationService.API.csproj"
+
+COPY . ./
+
+RUN dotnet publish "MoneyFlow.AuthenticationService.API/MoneyFlow.AuthenticationService.API.csproj" -c Release -o /app/publish --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+WORKDIR /app
+
+COPY --from=build-env /app/publish .
+
+ENV ASPNETCORE_HTTP_PORTS=8088
+EXPOSE 8088
+
+ENTRYPOINT ["dotnet", "MoneyFlow.AuthenticationService.API.dll"]
