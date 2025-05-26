@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Factories\PageFactories\" />
+    <Folder Include="Factories\WiindowFactories\" />
+    <Folder Include="Factories\Interfaces\" />
+    <Folder Include="Resources\Behaviors\" />
+    <Folder Include="Resources\Styles\" />
+    <Folder Include="Resources\ValueConvertors\" />
+    <Folder Include="Services\NavigationPage\" />
+    <Folder Include="Services\NavigationWindow\" />
+    <Folder Include="Services\Interfaces\" />
+    <Folder Include="ViewModels\PageViewModels\" />
+    <Folder Include="ViewModels\WindowViewModels\" />
+    <Folder Include="ViewModels\UserControlViewModels\" />
+    <Folder Include="ViewModels\Interfaces\" />
+    <Folder Include="Views\Pages\" />
+    <Folder Include="Views\UserControls\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+</Project>

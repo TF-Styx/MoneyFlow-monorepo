@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyFlow.WPF.Client", "MoneyFlow.WPF.Client\MoneyFlow.WPF.Client.csproj", "{A997F3BE-1EDA-42D2-9B75-5A7D52724C77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyFlow.Domain", "MoneyFlow.Domain\MoneyFlow.Domain.csproj", "{77701A46-B341-4502-A6AF-96449C084D47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyFlow.Infrastructure", "MoneyFlow.Infrastructure\MoneyFlow.Infrastructure.csproj", "{12F3F33D-9070-4B7C-B386-0B4FED2849C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyFlow.Application", "MoneyFlow.Application\MoneyFlow.Application.csproj", "{B79F4FE8-CB66-4622-80CF-FC21F9256933}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A997F3BE-1EDA-42D2-9B75-5A7D52724C77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A997F3BE-1EDA-42D2-9B75-5A7D52724C77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A997F3BE-1EDA-42D2-9B75-5A7D52724C77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A997F3BE-1EDA-42D2-9B75-5A7D52724C77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77701A46-B341-4502-A6AF-96449C084D47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77701A46-B341-4502-A6AF-96449C084D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77701A46-B341-4502-A6AF-96449C084D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77701A46-B341-4502-A6AF-96449C084D47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12F3F33D-9070-4B7C-B386-0B4FED2849C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12F3F33D-9070-4B7C-B386-0B4FED2849C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12F3F33D-9070-4B7C-B386-0B4FED2849C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12F3F33D-9070-4B7C-B386-0B4FED2849C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B79F4FE8-CB66-4622-80CF-FC21F9256933}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B79F4FE8-CB66-4622-80CF-FC21F9256933}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B79F4FE8-CB66-4622-80CF-FC21F9256933}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B79F4FE8-CB66-4622-80CF-FC21F9256933}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
