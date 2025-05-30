@@ -10,9 +10,12 @@ namespace MoneyFlow.AuthenticationService.Application.UseCases.Realization.Gende
     {
         private readonly IGenderRepository _genderRepository = genderRepository;
 
-        public IAsyncEnumerable<GenderDTO> GetAllStreamingAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
+        public async IAsyncEnumerable<GenderDTO> GetAllStreamingAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            return _genderRepository.GetAllStreamingAsync(cancellationToken).Select(domain => domain.ToDTO());
+            var genderList = _genderRepository.GetAllStreamingAsync(cancellationToken);
+
+            await foreach (var gender in genderList.WithCancellation(cancellationToken))
+                yield return gender.ToDTO();
         }
     }
 }
