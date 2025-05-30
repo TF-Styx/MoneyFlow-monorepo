@@ -8,13 +8,11 @@
 
   <ItemGroup>
     <Folder Include="Enums\" />
-    <Folder Include="UseCases\Abstraction\" />
-    <Folder Include="UseCases\Realization\" />
-    <Folder Include="DTOs\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Mappers\" />
-    <Folder Include="InterfaceRepositories\" />
-    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MoneyFlow.Domain\MoneyFlow.Domain.csproj" />
   </ItemGroup>
 
 </Project>

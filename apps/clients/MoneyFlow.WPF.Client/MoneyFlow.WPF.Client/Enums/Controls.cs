@@ -2,6 +2,8 @@
 {
     public enum Controls
     {
-
+        AuthUserControl,
+        RegistrationUserControl,
+        RecoveryAccessUserControl,
     }
 }

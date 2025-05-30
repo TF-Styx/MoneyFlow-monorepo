@@ -4,5 +4,13 @@
     {
         None,
         Unknown,
+        ValueEmpty,
+        AuthenticateError,
+        NetworkError,
+        InvalidResponseFormat,
+        RegisterApiError,
+        Empty,
+        ValidationError,
+        RecoveryApiError,
     }
 }
