@@ -4,10 +4,8 @@ using MoneyFlow.AuthenticationService.Application.Interfaces.Realization;
 using MoneyFlow.AuthenticationService.Application.Providers.Abstraction;
 using MoneyFlow.AuthenticationService.Application.Providers.Realization;
 using MoneyFlow.AuthenticationService.Application.UseCases.Abstraction.GenderUseCases;
-using MoneyFlow.AuthenticationService.Application.UseCases.Abstraction.RoleUseCases;
 using MoneyFlow.AuthenticationService.Application.UseCases.Abstraction.UserUseCases;
 using MoneyFlow.AuthenticationService.Application.UseCases.Realization.GenderUseCases;
-using MoneyFlow.AuthenticationService.Application.UseCases.Realization.RoleUseCases;
 using MoneyFlow.AuthenticationService.Application.UseCases.Realization.UserUseCases;
 
 namespace MoneyFlow.AuthenticationService.Application.Extension
@@ -20,22 +18,8 @@ namespace MoneyFlow.AuthenticationService.Application.Extension
             services.AddScoped<IAuthenticateUserUseCase,    AuthenticateUserUseCase>();
             services.AddScoped<IGetUserByLoginUseCase,      GetUserByLoginUseCase>();
             services.AddScoped<IRecoveryAccessUserUseCase,  RecoveryAccessUserUseCase>();
-            //services.AddTransient<IGetAllStreamingUserUseCase,  GetAllStreamingUserUseCase>();
-            //services.AddTransient<IGetByIdUserUseCase,          GetByIdUserUseCase>();
-            //services.AddTransient<IUpdateUserUseCase,           UpdateUserUseCase>();
-            //services.AddTransient<IDeleteUserUseCase,           DeleteUserUseCase>();
 
-            services.AddScoped<ICreateGenderUseCase,             CreateGenderUseCase>();
             services.AddScoped<IGetAllStreamingGenderUseCase,    GetAllStreamingGenderUseCase>();
-            services.AddScoped<IUpdateGenderUseCase,             UpdateGenderUseCase>();
-            services.AddScoped<IGetByIdGenderUseCase,            GetByIdGenderUseCase>();
-            services.AddScoped<IDeleteGenderUseCase,             DeleteGenderUseCase>();
-
-            services.AddScoped<ICreateRoleUseCase,           CreateRoleUseCase>();
-            services.AddScoped<IGetAllStreamingRoleUseCase,  GetAllStreamingRoleUseCase>();
-            services.AddScoped<IUpdateRoleUseCase,           UpdateRoleUseCase>();
-            services.AddScoped<IGetByIdRoleUseCase,          GetByIdRoleUseCase>();
-            services.AddScoped<IDeleteRoleUseCase,           DeleteRoleUseCase>();
 
             services.AddSingleton<IPasswordHasher,              ArgonPasswordHasher>();
 

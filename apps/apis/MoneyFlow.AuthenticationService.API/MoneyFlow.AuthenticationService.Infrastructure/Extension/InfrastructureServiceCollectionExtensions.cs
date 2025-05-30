@@ -10,7 +10,6 @@ namespace MoneyFlow.AuthenticationService.Infrastructure.Extension
         {
             services.AddScoped<IUserRepository,     UserRepository>();
             services.AddScoped<IGenderRepository,   GenderRepository>();
-            services.AddScoped<IRoleRepository,     RoleRepository>();
 
             return services;
         }
