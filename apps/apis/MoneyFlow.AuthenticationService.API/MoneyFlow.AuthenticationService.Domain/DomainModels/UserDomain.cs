@@ -60,6 +60,13 @@ namespace MoneyFlow.AuthenticationService.Domain.DomainModels
                 return (null, message);
             }
 
+            int? idGenderDefault = null;
+
+            if (!idGender.HasValue)
+                idGenderDefault = 1;
+            else
+                idGenderDefault = idGender.Value;
+
             #endregion
 
             var dateRegistration = DateTime.UtcNow;
@@ -72,9 +79,12 @@ namespace MoneyFlow.AuthenticationService.Domain.DomainModels
                 UserName = userName,
                 PasswordHash = passwordHash,
                 Email = email.Value,
-                Phone = phone.Value,
-                IdGender = idGender,
+                Phone = phone?.Value,
+                IdGender = idGenderDefault,
                 IdRole = idRole,
+                DateRegistration = dateRegistration,
+                DateEntry = dateEntry,
+                DateUpdate = dateUpdate
             };
             return (domain, message);
         }
